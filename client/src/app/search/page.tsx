@@ -31,36 +31,36 @@ const Search = () => {
 
   return (
     <div className="p-8">
-      <Header name="Search" />
+      <Header name="Buscar" />
       <div>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Buscar..."
           className="w-1/2 rounded border p-3 shadow"
           onChange={handleSearch}
         />
       </div>
-      <div className="p-5">
-        {isLoading && <p>Loading...</p>}
-        {isError && <p>Error occurred while fetching search results.</p>}
+      <div className="p-5 dark:text-white">
+        {isLoading && <p>Cargando...</p>}
+        {isError && <p>Ocurrió un error mientras se hacia fetch</p>}
         {!isLoading && !isError && searchResults && (
           <div>
             {searchResults.tasks && searchResults.tasks?.length > 0 && (
-              <h2>Tasks</h2>
+              <h2>Tareas</h2>
             )}
             {searchResults.tasks?.map((task) => (
               <TaskCard key={task.id} task={task} />
             ))}
 
             {searchResults.projects && searchResults.projects?.length > 0 && (
-              <h2>Projects</h2>
+              <h2>Proyectos</h2>
             )}
             {searchResults.projects?.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
 
             {searchResults.users && searchResults.users?.length > 0 && (
-              <h2>Users</h2>
+              <h2>Usuarios</h2>
             )}
             {searchResults.users?.map((user) => (
               <UserCard key={user.userId} user={user} />

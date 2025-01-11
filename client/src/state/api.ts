@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
+import { ApiError } from "aws-amplify/api";
+import { AuthUser, fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
 
 export interface Project {
   id: number;
@@ -83,27 +84,42 @@ export const api = createApi({
       if (accessToken) {
         headers.set("Authorization", `Bearer ${accessToken}`);
       }
+
+      console.log("session😎😎",session);
+      console.log("accessToken😎😎",accessToken);
       return headers;
     },
   }),
   reducerPath: "api",
   tagTypes: ["Projects", "Tasks", "Users", "Teams"],
   endpoints: (build) => ({
-    getAuthUser: build.query({
+    getAuthUser: build.query<
+      { user: AuthUser; userSub: string | undefined; userDetails: User },
+      void
+    >({
       queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
         try {
           const user = await getCurrentUser();
+          console.log("user🤔",user);
           const session = await fetchAuthSession();
+          console.log("session🤔",session);
           if (!session) throw new Error("No session found");
           const { userSub } = session;
-          const { accessToken } = session.tokens ?? {};
+          // const { accessToken } = session.tokens ?? {};
 
           const userDetailsResponse = await fetchWithBQ(`users/${userSub}`);
+          console.log("userDetailsResponse🤔",userDetailsResponse);
           const userDetails = userDetailsResponse.data as User;
 
           return { data: { user, userSub, userDetails } };
-        } catch (error: any) {
-          return { error: error.message || "Could not fetch user data" };
+        } catch (error) {
+          // Manejo de errores genéricos
+          return {
+            error: {
+              status: 500,
+              data: error instanceof ApiError || error instanceof  Error ? error.message : "Unknown error",
+            },
+          };
         }
       },
     }),

@@ -8,7 +8,9 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
   try {
     const tasks = await prisma.task.findMany({
       where: {
-        projectId: Number(projectId),
+        projectId: {
+          equals: Number(projectId),
+        },
       },
       include: {
         author: true,
@@ -42,6 +44,8 @@ export const createTask = async (
     authorUserId,
     assignedUserId,
   } = req.body;
+
+  console.log("rre", req.body);
   try {
     const newTask = await prisma.task.create({
       data: {
@@ -50,8 +54,8 @@ export const createTask = async (
         status,
         priority,
         tags,
-        startDate,
-        dueDate,
+        startDate:new Date(startDate),
+        dueDate:new Date(dueDate),
         points,
         projectId,
         authorUserId,
@@ -60,6 +64,8 @@ export const createTask = async (
     });
     res.status(201).json(newTask);
   } catch (error: any) {
+
+    console.log("Error", error);
     res
       .status(500)
       .json({ message: `Error creating a task: ${error.message}` });

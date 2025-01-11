@@ -59,7 +59,24 @@ body,
   @apply dark:text-neutral-500;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 0px;
   height: 0px;
+} */
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px; /* Ancho de la barra */
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color de la barra de scroll */
+    border-radius: 4px; /* Bordes redondeados */
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Color al pasar el cursor */
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Color del track (fondo) */
+  }
 }
+

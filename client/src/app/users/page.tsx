@@ -22,10 +22,10 @@ const CustomToolbar = () => (
 
 const columns: GridColDef[] = [
   { field: "userId", headerName: "ID", width: 100 },
-  { field: "username", headerName: "Username", width: 150 },
+  { field: "username", headerName: "Usuario", width: 150 },
   {
     field: "profilePictureUrl",
-    headerName: "Profile Picture",
+    headerName: "Imagen",
     width: 100,
     renderCell: (params) => (
       <div className="flex h-full w-full items-center justify-center">
@@ -47,18 +47,25 @@ const Users = () => {
   const { data: users, isLoading, isError } = useGetUsersQuery();
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError || !users) return <div>Error fetching users</div>;
+  if (isLoading) return <div>Cargando...</div>;
+  if (isError || !users) return <div>Error fetching Usuarios</div>;
 
   return (
     <div className="flex w-full flex-col p-8">
-      <Header name="Users" />
-      <div style={{ height: 650, width: "100%" }}>
+      <Header name="Usuarios" />
+      <div style={{ height: 650, width: "100%" }} className="custom-scrollbar">
         <DataGrid
           rows={users || []}
           columns={columns}
           getRowId={(row) => row.userId}
           pagination
+          checkboxSelection
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 20, page: 0 },
+            },
+          }}
+          pageSizeOptions={[10, 20, 50]} // Incluye el tamaño de página predeterminado
           slots={{
             toolbar: CustomToolbar,
           }}

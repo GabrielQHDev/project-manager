@@ -45,6 +45,13 @@ const Teams = () => {
           rows={teams || []}
           columns={columns}
           pagination
+          checkboxSelection
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 20, page: 0 },
+            },
+          }}
+          pageSizeOptions={[10, 20, 50]} // Incluye el tamaño de página predeterminado
           slots={{
             toolbar: CustomToolbar,
           }}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Authenticator } from "@aws-amplify/ui-react";
 import { Amplify } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
@@ -19,34 +19,47 @@ const formFields = {
       order: 1,
       placeholder: "Choose a username",
       label: "Username",
-      inputProps: { required: true },
+      labelHidden: false,
     },
     email: {
-      order: 1,
+      order: 2,
       placeholder: "Enter your email address",
       label: "Email",
-      inputProps: { type: "email", required: true },
+      type: "email",
+      labelHidden: false,
+    },
+    nickname: {
+      order: 3,
+      placeholder: "Enter your nickname",
+      label: "Nickname",
+      labelHidden: false,
     },
     password: {
-      order: 3,
+      order: 4,
       placeholder: "Enter your password",
       label: "Password",
-      inputProps: { type: "password", required: true },
+      type: "password",
+      labelHidden: false,
     },
     confirm_password: {
-      order: 4,
+      order: 5,
       placeholder: "Confirm your password",
       label: "Confirm Password",
-      inputProps: { type: "password", required: true },
+      type: "password",
+      labelHidden: false,
     },
   },
 };
 
-const AuthProvider = ({ children }: any) => {
+type AuthProviderProps = {
+  children: ReactNode; // More specific type for children
+};
+
+const AuthProvider = ({ children }: AuthProviderProps) => {
   return (
     <div>
       <Authenticator formFields={formFields}>
-        {({ user }: any) =>
+        {({ user }) =>
           user ? (
             <div>{children}</div>
           ) : (

@@ -46,9 +46,25 @@ const ModalNewTask = ({ isOpen, onClose, id = null }: Props) => {
     });
   };
 
+  // const isFormValid = () => {
+  //   console.log("title",title);
+  //   console.log("authorUserId",authorUserId);
+  //   console.log("id",id);
+  //   console.log("projectId",projectId);
+  //   return (
+  //     title.trim() !== "" &&
+  //     authorUserId.trim() !== "" &&
+  //     (id !== null || projectId.trim() !== "")
+  //   );
+  // };
+
   const isFormValid = () => {
-    return title && authorUserId && !(id !== null || projectId);
+    if (!title.trim()) return false;
+    if (!authorUserId.trim()) return false;
+    if (id === null && !projectId.trim()) return false;
+    return true;
   };
+  
 
   const selectStyles =
     "mb-4 block w-full rounded border border-gray-300 px-3 py-2 dark:border-dark-tertiary dark:bg-dark-tertiary dark:text-white dark:focus:outline-none";
